@@ -9,16 +9,9 @@ namespace Gameplay
         public float moveForce;
         public float jumpForce;
 
-        private Rigidbody2D _rb;
-
-        private void Awake()
-        {
-            _rb = GetComponent<Rigidbody2D>();
-        }
-
         private void FixedUpdate()
         {
-            CheckInputs();
+            if (!Player.Reference.isDraggingCubelet) CheckInputs();
         }
 
         private void CheckInputs()
@@ -34,17 +27,17 @@ namespace Gameplay
 
         private void MoveLeft()
         {
-            _rb.velocity = new Vector2(-moveForce, _rb.velocity.y);
+            Player.Reference.rb.velocity = new Vector2(-moveForce, Player.Reference.rb.velocity.y);
         }
         
         private void MoveRight()
         {
-            _rb.velocity = new Vector2(moveForce, _rb.velocity.y);
+            Player.Reference.rb.velocity = new Vector2(moveForce, Player.Reference.rb.velocity.y);
         }
 
         private void StopMoving()
         {
-            _rb.velocity = new Vector2(0, _rb.velocity.y);
+            Player.Reference.rb.velocity = new Vector2(0, Player.Reference.rb.velocity.y);
         }
 
         private bool OnGround()
@@ -62,7 +55,7 @@ namespace Gameplay
 
         private void Jump()
         {
-            _rb.AddForce(new Vector2(0, jumpForce));
+            Player.Reference.rb.AddForce(new Vector2(0, jumpForce));
         }
     }
 }

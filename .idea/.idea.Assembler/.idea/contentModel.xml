@@ -14,6 +14,11 @@
             <e p="CubeletManager.cs" t="Include" />
             <e p="Player.cs" t="Include" />
             <e p="PlayerController.cs" t="Include" />
+            <e p="PlayerGrid.cs" t="Include" />
+            <e p="PlayerGridCell.cs" t="Include" />
+          </e>
+          <e p="System" t="Include">
+            <e p="Inputs.cs" t="Include" />
           </e>
         </e>
       </e>

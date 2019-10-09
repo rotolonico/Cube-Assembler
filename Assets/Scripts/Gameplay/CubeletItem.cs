@@ -22,16 +22,19 @@ namespace Gameplay
 
         private void Update()
         {
-            if (IsCloseToCubelet()) MoveTowardsPlayer();
-            else return;
-            if (IsTouchingCubelet()) MakeCubelet();
+            if (!Player.Reference.isDraggingCubelet && IsCloseToCubelet()) MoveTowardsPlayer();
+            else
+            {
+                StopMoving();
+                return;
+            }
+            if (!Player.Reference.isDraggingCubelet && IsTouchingCubelet()) MakeCubelet();
         }
 
         private bool IsCloseToCubelet()
         {
             var foundColliders = new Collider2D[10];
             var collidersNumber = attractionRadiusCol.OverlapCollider(new ContactFilter2D().NoFilter(), foundColliders);
-            Debug.Log(collidersNumber);
 
             for (var i = 0; i < collidersNumber; i++)
             {
@@ -58,7 +61,12 @@ namespace Gameplay
 
         private void MoveTowardsPlayer()
         {
-            _rb.velocity = -Player.Reference.transform.position.normalized * attractionSpeed;
+            _rb.velocity = (Player.Reference.transform.position - transform.position).normalized * attractionSpeed;
+        }
+        
+        private void StopMoving()
+        {
+            _rb.velocity = Vector2.zero;
         }
 
         private void MakeCubelet()
@@ -66,7 +74,8 @@ namespace Gameplay
             var newCubelet = Instantiate(cubelet, transform.position, Quaternion.identity);
             newCubelet.transform.SetParent(Player.Reference.transform, false);
             var newCubeletComponent = newCubelet.GetComponent<Cubelet>();
-            newCubeletComponent.MoveCubelet(new Vector2(5,5));
+            newCubeletComponent.MoveCubelet(new Vector2(1,1));
+            newCubeletComponent.UpdateCubelet();
             Destroy(gameObject);
         }
     }
